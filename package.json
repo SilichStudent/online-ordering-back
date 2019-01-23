@@ -1,0 +1,25 @@
+{
+  "name": "online-ordering-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc --watch & nodemon dist",
+    "tsc": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SilichStudent/online-ordering-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.15.3",
+    "nodemon": "1.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.22",
+    "typescript": "^3.2.4"
+  }
+}
