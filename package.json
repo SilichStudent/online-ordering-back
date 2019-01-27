@@ -16,9 +16,13 @@
   "license": "ISC",
   "dependencies": {
     "express": "4.15.3",
-    "nodemon": "1.11.0"
+    "mongodb": "^3.1.13",
+    "nodemon": "1.11.0",
+    "passport": "^0.4.0",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
+    "@types/redis": "^2.8.10",
     "@types/node": "^7.0.22",
     "typescript": "^3.2.4"
   }
