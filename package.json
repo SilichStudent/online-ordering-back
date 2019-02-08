@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc --watch & nodemon dist",
+    "start": "npm run build && node dist/index.js",
     "tsc": "tsc"
   },
   "repository": {
@@ -23,8 +23,10 @@
     "typeorm": "^0.2.12"
   },
   "devDependencies": {
+    "@types/mongodb": "^3.1.19",
     "@types/redis": "^2.8.10",
     "@types/node": "^7.0.22",
+    "@types/express": "^4.15.1",
     "typescript": "^3.2.4"
   }
 }

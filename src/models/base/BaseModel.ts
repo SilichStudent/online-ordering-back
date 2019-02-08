@@ -1,9 +1,9 @@
-import { ObjectIdColumn, CreateDateColumn } from 'typeorm'
+import { ObjectIdColumn, CreateDateColumn, ObjectID } from 'typeorm'
 
 export abstract class BaseModel{
 
     @ObjectIdColumn()
-    uuid: string;
+    id: ObjectID;
 
     @CreateDateColumn()
     createdDate: string;
