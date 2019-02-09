@@ -10,8 +10,8 @@ export class UserController {
 
     constructor() {
         this.userRepository = new UserRepository();
-        this.userController.get('/users/:id', this.getUser);
-        this.userController.post('/users', this.createUser);
+        this.userController.get('/users/:id', this.getUser.bind(this));
+        this.userController.post('/users', this.createUser.bind(this));
     }
 
     private async getUser(req: Request, res: Response, next: NextFunction) {
@@ -27,8 +27,6 @@ export class UserController {
     }
 
     private async createUser(req: Request, res: Response, next: NextFunction) {
-        console.log("Check");
-        
         const { email, password, name } = req.body;
         const user : User = new User();
 

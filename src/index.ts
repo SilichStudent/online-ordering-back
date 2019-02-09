@@ -20,7 +20,8 @@ const appInstallPromise : Promise<void> = connection.then( c => {
   
     return console.log(`server is listening on ${port}`);
   })
-});
+}).catch((e : Error) => { console.log(e.stack);
+})
 
 module.exports = {
   serverApp,

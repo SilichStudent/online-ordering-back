@@ -2,6 +2,7 @@ module.exports = {
     type: "mongodb",
     host: "localhost",
     port: 27017,
-    entities: ["src/models/**/*.ts"],
-    database: "online-ordering"
+    entities: ["dist/models/**/*.js"],
+    database: "online-ordering",
+    useNewUrlParser: true
 }

@@ -1,11 +1,13 @@
 import * as express from 'express'
+import * as bodyParser from 'body-parser'
 import { Routes } from './Routes'
 
 export class App {
-  public app
+  public app : express.Express;
 
   constructor () {
-    this.app = express()
+    this.app = express();
+    this.app.use(bodyParser.json());
   }
 
   public mountRoutes (): void {
