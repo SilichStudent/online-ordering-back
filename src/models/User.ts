@@ -14,5 +14,5 @@ export class User extends BaseModel{
     email: string;
 
     @Column()
-    balans: number;
+    balance: number;
 }

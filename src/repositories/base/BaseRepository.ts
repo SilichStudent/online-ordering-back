@@ -2,7 +2,13 @@ import { Repository, getRepository, ObjectType } from 'typeorm'
 
 export class BaseRepository<T>{
 
-    protected getRepository(entity: ObjectType<T>): Repository<T> {
-        return getRepository(entity);
+    private entity: ObjectType<T>;
+
+    constructor(entity: ObjectType<T>){
+        this.entity = entity;
+    }
+
+    protected getRepository(): Repository<T> {
+        return getRepository(this.entity);
     }
 }
