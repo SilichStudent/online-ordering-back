@@ -11,4 +11,9 @@ export class BaseRepository<T>{
     protected getRepository(): Repository<T> {
         return getRepository(this.entity);
     }
+
+    public async count(): Promise<number> {
+        const count = await this.getRepository().count();
+        return count;
+    }
 }

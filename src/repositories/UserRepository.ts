@@ -31,9 +31,4 @@ export class UserRepository extends BaseRepository<User> {
         await this.getRepository().delete(id);
         return true;
     }
-
-    async count(): Promise<number> {
-        const count = await this.getRepository().count();
-        return count;
-    }
 }
