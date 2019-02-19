@@ -4,5 +4,7 @@ module.exports = {
     port: 27017,
     entities: ["dist/models/**/*.js"],
     database: "online-ordering",
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    logging: 'all',
+    synchronize: true
 }
