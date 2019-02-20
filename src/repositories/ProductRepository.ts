@@ -5,12 +5,17 @@ export class ProductRepository extends BaseRepository<Product> {
     constructor() {
         super(Product)
     }
-
-    public async find(limit: number, offset: number): Promise<Array<Product>>{
-        const products = await this.getRepository().find({skip: offset, take: limit});
-        return products
-    }
-
+    
+        public async find(limit: number, offset: number): Promise<Array<Product>>{
+            const products = await this.getRepository().find({skip: offset, take: limit});
+            return products
+        }
+    
+        public async findWithoutCAtegory(): Promise<Array<Product>>{
+            const products = await this.getRepository().find({ categoryId : null });
+            return products
+        }
+    
     async findById(id: string): Promise<Product> {
         const product = await this.getRepository().findOne(id);
         return product;
