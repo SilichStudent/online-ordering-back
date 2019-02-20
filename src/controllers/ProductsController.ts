@@ -17,35 +17,35 @@ export class ProductController {
         this.productController.get('/products/:id', this.getProduct.bind(this));
     }
 
-    private async getProduct(req: Request, res: Response, next: NextFunction){
+    private async getProduct(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
 
-        try{
+        try {
             const product = await this.productRepository.findById(id);
             return res.status(200).send(product);
-        } catch(err){
+        } catch (err) {
             return next(err);
         }
     }
 
-    private async getProducts(req: Request, res: Response, next: NextFunction){
+    private async getProducts(req: Request, res: Response, next: NextFunction) {
         const { limit, offset } = req.query;
 
-        try{
-            const products = await this.appProductsService.getProducts(limit, offset);
+        try {
+            const products = await this.appProductsService.getProducts(parseInt(limit), parseInt(offset));
             return res.status(200).send(products);
-        } catch(err){
+        } catch (err) {
             return next(err);
         }
     }
 
-    private async createProduct(req: Request, res: Response, next: NextFunction){
+    private async createProduct(req: Request, res: Response, next: NextFunction) {
         const product = req.body;
 
-        try{
+        try {
             const createdProduct = await this.appProductsService.create(product);
             return res.status(200).send(createdProduct);
-        } catch(err){
+        } catch (err) {
             return next(err);
         }
     }

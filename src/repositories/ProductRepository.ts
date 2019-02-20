@@ -1,5 +1,4 @@
 import { BaseRepository } from './base/BaseRepository'
-import { ObjectID } from 'typeorm';
 import { Product } from '../models/Product';
 
 export class ProductRepository extends BaseRepository<Product> {
@@ -15,6 +14,11 @@ export class ProductRepository extends BaseRepository<Product> {
     async findById(id: string): Promise<Product> {
         const product = await this.getRepository().findOne(id);
         return product;
+    }
+
+    async findByCategoryId(id: string): Promise<Array<Product>> {
+        const products = await this.getRepository().find({ categoryId : id });
+        return products;
     }
 
     async create(product: Product): Promise<Product> {

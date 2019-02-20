@@ -23,7 +23,7 @@ export class UserRepository extends BaseRepository<User> {
     }
 
     async update(user: User): Promise<any> {
-        const updatedUser = await this.getRepository().update(user.id, { name: user.name, email: user.email, password: user.password });
+        const updatedUser = await this.getRepository().update(user.id.toHexString(), { name: user.name, email: user.email, password: user.password });
         return updatedUser;
     }
 

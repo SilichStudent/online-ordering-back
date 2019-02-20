@@ -1,0 +1,28 @@
+import { Product } from '../../models/Product';
+import { CategoryRepository } from '../../repositories/CategoryRepository';
+import { Category } from '../../models/Category';
+
+export class CategoriesService {
+
+    categoryRepository: CategoryRepository = new CategoryRepository();
+
+    async getProducts(limit: number, offset: number): Promise<object> {
+        const categories = await this.categoryRepository.find(limit, offset);
+        const count = await this.categoryRepository.count();
+        return {
+            list: categories,
+            offset: offset,
+            limit: categories.length,
+            count
+        }
+    }
+
+    async create(body): Promise<Category> {
+        const category = new Category();
+
+        category.name = body.name;
+
+        const createdCategory = await this.categoryRepository.create(category);
+        return createdCategory;
+    }
+}

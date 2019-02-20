@@ -1,9 +1,6 @@
-import { UserRepository } from '../../repositories/UserRepository'
 import { ProductRepository } from '../../repositories/ProductRepository';
 import { Product } from '../../models/Product';
-import { ObjectID } from 'typeorm';
 import { CategoryRepository } from '../../repositories/CategoryRepository';
-import { Category } from '../../models/Category';
 
 export class ProductsService{
 
@@ -26,10 +23,7 @@ export class ProductsService{
         product.name=body.name;
         product.image=body.image;
         product.description=body.description;
-
-        const category : Category = await this.categoryRepository.findById(body.category);
-
-        product.category= category;
+        product.categoryId = body.categoryId;
 
         const createdProduct = await this.productRepository.create(product);
         return createdProduct;

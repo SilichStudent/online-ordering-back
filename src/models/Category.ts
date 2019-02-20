@@ -8,6 +8,5 @@ export class Category extends BaseModel{
     @Column({ nullable: false })
     name: string;
 
-    @OneToMany(type => Product, product => product.category)
     products: Product[];
 }

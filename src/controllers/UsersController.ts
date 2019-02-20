@@ -70,13 +70,13 @@ export class UserController {
         }
     }
 
-    private async deleteUser(req: Request, res: Response, next: NextFunction){
-        const {id} = req.params;
+    private async deleteUser(req: Request, res: Response, next: NextFunction) {
+        const { id } = req.params;
 
-        try{
+        try {
             await this.userRepository.delete(new ObjectID(id));
             return res.status(200).send();
-        } catch(err){
+        } catch (err) {
 
         }
     }
