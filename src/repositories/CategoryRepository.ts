@@ -1,6 +1,6 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Category } from '../models/Category';
-import { QueryBuilder } from 'typeorm'
+import { QueryBuilder, ObjectID } from 'typeorm';
 import { ProductRepository } from './ProductRepository';
 
 export class CategoryRepository extends BaseRepository<Category> {
@@ -34,5 +34,15 @@ export class CategoryRepository extends BaseRepository<Category> {
             const products = await this.productRepository.findByCategoryId(categories[i].id.toString());
             categories[i].products = products;
         }
+
+        const productsWithoutCategory = {
+            name: 'default',
+            id: new ObjectID(),
+            products: undefined
+        }
+
+        productsWithoutCategory.products = await this.productRepository.findWithoutCAtegory();
+
+        return productsWithoutCategory;
     }
 }
