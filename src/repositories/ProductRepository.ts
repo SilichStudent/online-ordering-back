@@ -30,4 +30,11 @@ export class ProductRepository extends BaseRepository<Product> {
         const createdProduct = await this.getRepository().save(product);
         return createdProduct;
     }
+
+    async findByIdArray(ids: string[]): Promise<Array<Product>> {
+        const idObjects = ids.map( id => ({ id: id }));
+
+        const products = await this.getRepository().find({ where : idObjects });
+        return products;
+    }
 }
