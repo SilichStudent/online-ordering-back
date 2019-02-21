@@ -8,11 +8,11 @@ export class UsersService{
     async create(body): Promise<User>{
         const user: User = new User();
 
-        user.name = name;
+        user.name = body.name;
         user.email = body.email;
         user.password = body.password;
-        user.balance = body.balance;
-        user.isBlocked = body.isBlocked;
+        user.balance = body.balance || 0;
+        user.isBlocked = body.isBlocked || false;
 
         const createdProduct = await this.usersRepository.create(user);
         return createdProduct;

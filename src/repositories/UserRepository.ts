@@ -22,12 +22,13 @@ export class UserRepository extends BaseRepository<User> {
         return users;
     }
 
-    async update(user: User): Promise<any> {
-        const updatedUser = await this.getRepository().update(user.id.toHexString(), { name: user.name, email: user.email, password: user.password });
+    async update(id: string, user: User): Promise<any> {
+        await this.getRepository().update(id, { isBlocked: user.isBlocked, balance: user.balance});
+        const updatedUser = this.findById(id);
         return updatedUser;
     }
 
-    async delete(id: ObjectID): Promise<boolean> {
+    async delete(id: string): Promise<boolean> {
         await this.getRepository().delete(id);
         return true;
     }

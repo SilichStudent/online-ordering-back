@@ -63,8 +63,8 @@ export class ManagersController {
         const user = req.body;
 
         try {
-            const updatedUser = await this.userRepository.update(user);
-            return res.status(200).send(updatedUser);
+            // const updatedUser = await this.userRepository.update(user);
+            return res.status(200).send();
         } catch (err) {
             return next(err);
         }
@@ -74,7 +74,7 @@ export class ManagersController {
         const { id } = req.params;
 
         try {
-            await this.userRepository.delete(new ObjectID(id));
+            // await this.userRepository.delete(new ObjectID(id));
             return res.status(200).send();
         } catch (err) {
 

@@ -1,6 +1,6 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Category } from '../models/Category';
-import { QueryBuilder, ObjectID } from 'typeorm';
+import { ObjectID } from 'mongodb';
 import { ProductRepository } from './ProductRepository';
 
 export class CategoryRepository extends BaseRepository<Category> {
