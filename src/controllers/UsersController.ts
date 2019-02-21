@@ -44,15 +44,10 @@ export class UserController {
     }
 
     private async createUser(req: Request, res: Response, next: NextFunction) {
-        const { email, password, name } = req.body;
-        const user: User = new User();
-
-        user.name = name;
-        user.password = password;
-        user.email = email;
-
+        const body = req.body;
+        
         try {
-            const createdUser = await this.userRepository.create(user);
+            const createdUser = await this.appUsersService.create(body);
             return res.status(201).send(createdUser);
         } catch (err) {
             return next(err);
