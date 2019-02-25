@@ -13,7 +13,7 @@ export class User extends BaseModel {
     @Column({ nullable: false, unique: true })
     email: string;
 
-    @Column({ default: 0, nullable: false })
+    @Column({ type: "float", default: 0, nullable: false })
     balance: number;
 
     @Column({ default: false, nullable: false })

@@ -1,6 +1,6 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Category } from '../models/Category';
-import { ObjectID } from 'mongodb';
+import { ObjectID } from 'bson';
 import { ProductRepository } from './ProductRepository';
 
 export class CategoryRepository extends BaseRepository<Category> {
@@ -11,10 +11,12 @@ export class CategoryRepository extends BaseRepository<Category> {
         super(Category)
     }
 
-    public async find(limit: number, offset: number): Promise<Array<Category>>{
-        const categories = await this.getRepository().find({skip: offset, take: limit});
+    public async find(limit: number, offset: number): Promise<Array<Category>> {
+        const categories: any[] = await this.getRepository().find();
 
-        await this.addProducts(categories);
+        const productsWithoutCategory = await this.addProducts(categories);
+
+        categories.push(productsWithoutCategory);
 
         return categories
     }
@@ -29,8 +31,8 @@ export class CategoryRepository extends BaseRepository<Category> {
         return createdCategory;
     }
 
-    private async addProducts(categories : Category[]){
-        for(let i = 0 ; i < categories.length; i++ ){
+    private async addProducts(categories: Category[]) {
+        for (let i = 0; i < categories.length; i++) {
             const products = await this.productRepository.findByCategoryId(categories[i].id.toString());
             categories[i].products = products;
         }
@@ -41,8 +43,15 @@ export class CategoryRepository extends BaseRepository<Category> {
             products: undefined
         }
 
-        productsWithoutCategory.products = await this.productRepository.findWithoutCAtegory();
+        productsWithoutCategory.products = await this.productRepository.findWithoutCategory();
 
         return productsWithoutCategory;
+    }
+
+    async findByIdArray(ids: string[]): Promise<Array<Category>> {
+        const idObjects = ids.map(id => ({ id: new ObjectID(id) }));
+
+        const products = await this.getRepository().find({ where: idObjects });
+        return products;
     }
 }

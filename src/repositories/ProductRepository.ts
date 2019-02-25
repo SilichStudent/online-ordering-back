@@ -1,28 +1,29 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Product } from '../models/Product';
+import { ObjectID } from 'bson';
 
 export class ProductRepository extends BaseRepository<Product> {
     constructor() {
         super(Product)
     }
-    
-        public async find(limit: number, offset: number): Promise<Array<Product>>{
-            const products = await this.getRepository().find({skip: offset, take: limit});
-            return products
-        }
-    
-        public async findWithoutCAtegory(): Promise<Array<Product>>{
-            const products = await this.getRepository().find({ categoryId : null });
-            return products
-        }
-    
+
+    public async find(limit: number, offset: number): Promise<Array<Product>> {
+        const products = await this.getRepository().find({ skip: offset, take: limit });
+        return products
+    }
+
+    public async findWithoutCategory(): Promise<Array<Product>> {
+        const products = await this.getRepository().find({ categoryId: null });
+        return products
+    }
+
     async findById(id: string): Promise<Product> {
         const product = await this.getRepository().findOne(id);
         return product;
     }
 
     async findByCategoryId(id: string): Promise<Array<Product>> {
-        const products = await this.getRepository().find({ categoryId : id });
+        const products = await this.getRepository().find({ categoryId: id });
         return products;
     }
 
@@ -32,9 +33,9 @@ export class ProductRepository extends BaseRepository<Product> {
     }
 
     async findByIdArray(ids: string[]): Promise<Array<Product>> {
-        const idObjects = ids.map( id => ({ id: id }));
+        const idObjects = ids.map(id => ({ id: new ObjectID(id) }));
 
-        const products = await this.getRepository().find({ where : idObjects });
+        const products = await this.getRepository().find({ where: idObjects });
         return products;
     }
 }
