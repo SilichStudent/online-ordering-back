@@ -22,6 +22,11 @@ export class UserRepository extends BaseRepository<User> {
         return users;
     }
 
+    async findByEmailAndPassword(email: string, password: string){
+        const user = await this.getRepository().find({ email, password });
+        return user;
+    }
+
     async update(id: string, user: User): Promise<any> {
         await this.getRepository().update(id, { isBlocked: user.isBlocked, balance: user.balance});
         const updatedUser = this.findById(id);

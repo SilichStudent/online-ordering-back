@@ -14,8 +14,9 @@ export class UserController {
   constructor() {
     this.userController.get("/users/:id", this.getUser.bind(this));
     this.userController.delete("/users/:id", this.deleteUser.bind(this));
-    this.userController.get("/users", this.getUsers.bind(this));
     this.userController.put("/users/:id", this.updateUser.bind(this));
+
+    this.userController.get("/users", this.getUsers.bind(this));
     this.userController.post("/users", this.createUser.bind(this));
   }
 
@@ -72,6 +73,16 @@ export class UserController {
     try {
       await this.userRepository.delete(id);
       return res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  private async signIn(req: Request, res: Response, next: NextFunction) {
+    const { email, password } = req.body;
+
+    try {
+      
     } catch (err) {
       return next(err);
     }
