@@ -1,8 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { UserRepository } from "../repositories/UserRepository";
-import { User } from "../models/User";
 import { UsersService } from "../services/app/UsersService";
-import { ObjectID } from "typeorm";
+import { AuthenticationService } from "../services/AuthenticationService";
 
 export class UserController {
   public userController: Router = Router();
@@ -11,6 +10,8 @@ export class UserController {
 
   private appUsersService: UsersService = new UsersService();
 
+  private authService: AuthenticationService = new AuthenticationService();
+
   constructor() {
     this.userController.get("/users/:id", this.getUser.bind(this));
     this.userController.delete("/users/:id", this.deleteUser.bind(this));
@@ -18,6 +19,7 @@ export class UserController {
 
     this.userController.get("/users", this.getUsers.bind(this));
     this.userController.post("/users", this.createUser.bind(this));
+    this.userController.post("/users/signIn", this.signIn.bind(this));
   }
 
   private async getUser(req: Request, res: Response, next: NextFunction) {
@@ -82,7 +84,8 @@ export class UserController {
     const { email, password } = req.body;
 
     try {
-      
+      const result = await this.authService.authUser(email, password);
+      return res.status(200).send(result); 
     } catch (err) {
       return next(err);
     }
