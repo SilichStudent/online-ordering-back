@@ -1,5 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express'
-import { UserRepository } from '../repositories/UserRepository'
+import { Router, Request, Response, NextFunction } from 'express';
 import { ManagerService } from '../services/app/ManagerService';
 import { AuthenticationService } from '../services/AuthenticationService';
 import { AuthMiddleware } from '../middlewares/AuthMiddleware';

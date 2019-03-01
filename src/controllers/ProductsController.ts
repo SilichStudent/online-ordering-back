@@ -1,5 +1,5 @@
-import { Router, Request, Response, NextFunction } from 'express'
-import { ProductsService } from '../services/app/ProductsService'
+import { Router, Request, Response, NextFunction } from 'express';
+import { ProductsService } from '../services/app/ProductsService';
 import { ProductRepository } from '../repositories/ProductRepository';
 import { AuthMiddleware } from '../middlewares/AuthMiddleware';
 import { Role } from '../enums/Role';

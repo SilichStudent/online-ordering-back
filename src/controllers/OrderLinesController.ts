@@ -1,6 +1,5 @@
-import { Router, Request, Response, NextFunction } from 'express'
-import { OrderLinesService } from '../services/app/OrderLinesService'
-import { OrderLineRepository } from '../repositories/OrderLineRepository';
+import { Router, Request, Response, NextFunction } from 'express';
+import { OrderLinesService } from '../services/app/OrderLinesService';
 import { AuthMiddleware } from '../middlewares/AuthMiddleware';
 import { Role } from '../enums/Role';
 
