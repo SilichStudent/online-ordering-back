@@ -1,4 +1,4 @@
-import { Entity, Column } from 'typeorm'
+import { Entity, Column, OneToMany } from 'typeorm'
 import { BaseModel } from './base/BaseModel';
 import { Order } from './Order'
 
@@ -20,5 +20,6 @@ export class User extends BaseModel {
     @Column({ default: false, nullable: false, name: "is_blocked" })
     isBlocked: boolean;
 
+    @OneToMany(type => Order, order => order.user)
     orders: Order[];
 }
