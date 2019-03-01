@@ -35,7 +35,7 @@ export class CategoryRepository extends BaseRepository<Category> {
     async findByIdArray(ids: string[]): Promise<Array<Category>> {
         const idObjects = ids.map(id => ({ id: id }));
 
-        const products = await this.getRepository().find({ where: idObjects });
+        const products = await this.getRepository().find({ where: idObjects, relations: ['products'] });
         return products;
     }
 

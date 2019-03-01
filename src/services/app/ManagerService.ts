@@ -47,7 +47,7 @@ export class ManagerService {
         return {
             list: managers,
             offset: offset,
-            limit: managers.length,
+            limit: limit,
             count
         }
     }

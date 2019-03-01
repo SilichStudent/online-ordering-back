@@ -13,7 +13,7 @@ export class ProductsService {
         return {
             list: products,
             offset: offset,
-            limit: products.length,
+            limit,
             count
         }
     }

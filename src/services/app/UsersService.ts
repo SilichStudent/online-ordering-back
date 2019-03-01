@@ -36,7 +36,7 @@ export class UsersService {
         return {
             list: users,
             offset: offset,
-            limit: users.length,
+            limit,
             count
         }
     }

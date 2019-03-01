@@ -12,7 +12,7 @@ export class CategoriesService {
         return {
             list: categories,
             offset: offset,
-            limit: categories.length,
+            limit: limit,
             count
         }
     }

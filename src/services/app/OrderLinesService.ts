@@ -10,12 +10,20 @@ export class OrderLinesService {
     categoryRepository: CategoryRepository = new CategoryRepository();
 
     async getOrderLines(limit: number, offset: number): Promise<object> {
-        let orderLines: any[] = await this.orderLineRepository.find(limit, offset);
+        let orderLines: OrderLine[] = await this.orderLineRepository.find(limit, offset);
+
+        for (let i = 0; i < orderLines.length; i++) {
+            const orderLine = orderLines[i];
+            const catIds = orderLine.categories.map( cat=> cat.id);
+
+            orderLine.categories = await this.categoryRepository.findByIdArray(catIds);
+        }
+
         const count = await this.orderLineRepository.count();
         return {
             list: orderLines,
             offset: offset,
-            limit: orderLines.length,
+            limit: limit,
             count
         }
     }
