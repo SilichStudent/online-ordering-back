@@ -16,4 +16,15 @@ export class BaseRepository<T>{
         const count = await this.getRepository().count();
         return count;
     }
+
+    
+    async findById(id: string): Promise<T> {
+        const entity = await this.getRepository().findOne(id);
+        return entity;
+    }
+
+    async create(entity: T): Promise<T> {
+        const createdEntity = await this.getRepository().save(entity);
+        return createdEntity;
+    }
 }

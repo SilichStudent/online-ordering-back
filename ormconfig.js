@@ -1,10 +1,16 @@
 module.exports = {
-    type: "mongodb",
+    type: "postgres",
     host: "localhost",
-    port: 27017,
-    entities: ["dist/models/**/*.js"],
+    port: 5432,
+    username: "postgres",
+    password: "hurmat",
     database: "online-ordering",
-    useNewUrlParser: true,
-    logging: 'all',
-    synchronize: true
+    entities: ["dist/models/**/*.js"],
+    migrationsTableName: "custom_migration_table",
+    migrations: ["dist/migrations/**/*.js"],
+    logging: 'error',
+    synchronize: true,
+    cli: {
+        "migrationsDir": "migration"
+    }
 }

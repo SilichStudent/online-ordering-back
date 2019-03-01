@@ -12,6 +12,7 @@ let serverApp = appObj.app;
 const appInstallPromise: Promise<void> = connection
   .then(c => {
     appObj.mountRoutes();
+    appObj.addErrorHandler();
     serverApp.listen(port, (err: Error) => {
       if (err) {
         console.log(err.message || err);

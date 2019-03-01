@@ -3,10 +3,11 @@ import { BaseModel } from './base/BaseModel';
 import { Product } from './Product';
 
 @Entity({ name: 'categories' })
-export class Category extends BaseModel{
+export class Category extends BaseModel {
 
-    @Column({ nullable: false })
+    @Column({ nullable: false, unique: true })
     name: string;
 
+    @OneToMany(type => Product, product => product.category, { cascade: true })
     products: Product[];
 }

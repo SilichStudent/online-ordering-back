@@ -2,11 +2,11 @@ import { Entity, Column } from 'typeorm'
 import { BaseModel } from './base/BaseModel';
 
 @Entity({ name: 'managers' })
-export class Manager extends BaseModel{
+export class Manager extends BaseModel {
 
-    @Column()
+    @Column({ nullable: false })
     password: string;
 
-    @Column()
+    @Column({ nullable: false, unique: true })
     email: string;
 }

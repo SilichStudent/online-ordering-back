@@ -1,6 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import { ProductsService } from '../services/app/ProductsService'
 import { ProductRepository } from '../repositories/ProductRepository';
+import { AuthMiddleware } from '../middlewares/AuthMiddleware';
+import { Role } from '../enums/Role';
 
 export class ProductController {
 
@@ -9,12 +11,15 @@ export class ProductController {
     private productRepository: ProductRepository = new ProductRepository();
 
     private appProductsService: ProductsService = new ProductsService();
+    private authMiddleware: AuthMiddleware = new AuthMiddleware();
 
     constructor() {
         this.productController.get('/products', this.getProducts.bind(this));
-        this.productController.post('/products', this.createProduct.bind(this));
+        this.productController.post('/products', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.createProduct.bind(this));
 
         this.productController.get('/products/:id', this.getProduct.bind(this));
+        this.productController.put('/products/:id', this.update.bind(this));
+        this.productController.delete('/products/:id', this.delete.bind(this));
     }
 
     private async getProduct(req: Request, res: Response, next: NextFunction) {
@@ -45,6 +50,29 @@ export class ProductController {
         try {
             const createdProduct = await this.appProductsService.create(product);
             return res.status(200).send(createdProduct);
+        } catch (err) {
+            return next(err);
+        }
+    }
+
+    private async delete(req: Request, res: Response, next: NextFunction) {
+        const { id } = req.params;
+
+        try {
+            await this.productRepository.delete(id);
+            return res.status(200).send({ id });
+        } catch (err) {
+            return next(err);
+        }
+    }
+
+    private async update(req: Request, res: Response, next: NextFunction) {
+        const product = req.body;
+        const { id } = req.params;
+
+        try {
+            const updatedProduct = await this.appProductsService.update(id, product);
+            return res.status(200).send(updatedProduct);
         } catch (err) {
             return next(err);
         }

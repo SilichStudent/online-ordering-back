@@ -1,9 +1,11 @@
-import { Entity, Column } from 'typeorm'
+import { Entity, Column, ManyToMany } from 'typeorm'
 import { BaseModel } from './base/BaseModel';
 import { Product } from './Product';
+import { type } from 'os';
+import { Category } from './Category';
 
 @Entity({ name: 'order_lines' })
-export class OrderLine extends BaseModel{
+export class OrderLine extends BaseModel {
 
     @Column({ nullable: false })
     name: string;
@@ -23,9 +25,9 @@ export class OrderLine extends BaseModel{
     @Column({ nullable: false })
     published: boolean;
 
-    @Column({ nullable: false })
-    categories: string[];
+    @ManyToMany(type => Category)
+    categories: Category[];
 
-    @Column({ nullable: false })
-    products: string[];
+    @ManyToMany(type => Product)
+    products: Product[];
 }

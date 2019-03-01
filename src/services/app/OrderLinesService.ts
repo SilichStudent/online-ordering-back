@@ -12,7 +12,7 @@ export class OrderLinesService {
     async getOrderLines(limit: number, offset: number): Promise<object> {
         let orderLines: any[] = await this.orderLineRepository.find(limit, offset);
 
-        const categoriesTree = await this.categoryRepository.find(0, 0);
+        const categoriesTree = await this.categoryRepository.find();
 
         orderLines = orderLines.map(line => {
             line.categories = categoriesTree.filter(category => line.categories.some(categoryId => categoryId === category.id.toString()));

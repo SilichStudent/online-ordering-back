@@ -1,6 +1,6 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Product } from '../models/Product';
-import { ObjectID } from 'bson';
+import { Category } from '../models/Category';
 
 export class ProductRepository extends BaseRepository<Product> {
     constructor() {
@@ -13,29 +13,33 @@ export class ProductRepository extends BaseRepository<Product> {
     }
 
     public async findWithoutCategory(): Promise<Array<Product>> {
-        const products = await this.getRepository().find({ categoryId: null });
+        const products = await this.getRepository().find({ category: null });
         return products
     }
-
-    async findById(id: string): Promise<Product> {
-        const product = await this.getRepository().findOne(id);
-        return product;
-    }
-
+    
     async findByCategoryId(id: string): Promise<Array<Product>> {
-        const products = await this.getRepository().find({ categoryId: id });
+        const products = await this.getRepository().find();
         return products;
-    }
-
-    async create(product: Product): Promise<Product> {
-        const createdProduct = await this.getRepository().save(product);
-        return createdProduct;
     }
 
     async findByIdArray(ids: string[]): Promise<Array<Product>> {
-        const idObjects = ids.map(id => ({ id: new ObjectID(id) }));
+        const idObjects = ids.map(id => ({ id }));
 
         const products = await this.getRepository().find({ where: idObjects });
         return products;
+    }
+
+    async deleteByCategoryId(category: Category){
+        await this.getRepository().delete({ category: category});
+    }
+
+    async delete(id: string){
+        await this.getRepository().delete(id);
+    }
+
+    async update(id: string, product: Product){
+        await this.getRepository().update(id, product);
+        const updatedProduct = this.findById(id);
+        return updatedProduct;
     }
 }

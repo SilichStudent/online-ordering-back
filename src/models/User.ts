@@ -7,7 +7,7 @@ export class User extends BaseModel {
     @Column({ nullable: false, unique: true })
     name: string;
 
-    @Column({ nullable: false, unique: true })
+    @Column({ nullable: false})
     password: string;
 
     @Column({ nullable: false, unique: true })
