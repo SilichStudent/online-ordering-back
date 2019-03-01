@@ -5,6 +5,6 @@ export abstract class BaseModel{
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ name: "created_date"})
     createdDate: string;
 }

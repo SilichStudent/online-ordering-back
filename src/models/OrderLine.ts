@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToMany } from 'typeorm'
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm'
 import { BaseModel } from './base/BaseModel';
 import { Product } from './Product';
 import { type } from 'os';
@@ -26,8 +26,10 @@ export class OrderLine extends BaseModel {
     published: boolean;
 
     @ManyToMany(type => Category)
+    @JoinTable()
     categories: Category[];
 
     @ManyToMany(type => Product)
+    @JoinTable()
     products: Product[];
 }

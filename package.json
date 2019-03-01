@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "migrate" : "npm run tsc && typeorm migration:run",
+    "migrate": "npm run tsc && typeorm migration:run",
     "start": "npm run build && node dist/index.js",
     "tsc": "tsc"
   },

@@ -11,28 +11,6 @@ export class OrderLinesService {
 
     async getOrderLines(limit: number, offset: number): Promise<object> {
         let orderLines: any[] = await this.orderLineRepository.find(limit, offset);
-
-        const categoriesTree = await this.categoryRepository.find();
-
-        orderLines = orderLines.map(line => {
-            line.categories = categoriesTree.filter(category => line.categories.some(categoryId => categoryId === category.id.toString()));
-
-            const productsObj = [];
-
-            line.products.forEach(productId => {
-                categoriesTree.forEach(category => {
-                    const productObj = category.products.filter(product => product.id.toString() == productId)[0];
-                    if (productObj) {
-                        productsObj.push(productObj);
-                    }
-                });
-            });
-
-            line.products = productsObj;
-
-            return line;
-        })
-
         const count = await this.orderLineRepository.count();
         return {
             list: orderLines,
@@ -50,9 +28,16 @@ export class OrderLinesService {
         orderLine.startTime = new Date(body.startTime);
         orderLine.endTime = new Date(body.endTime);
         orderLine.isActive = body.isActive;
-        orderLine.published = body.published;
-        orderLine.categories = body.categories;
-        orderLine.products = body.products;
+        orderLine.published = false;;
+
+        const catIdsArray = body.categories.map( cat => cat.id ); 
+        const prodIdsArray = body.products.map( prod => prod.id );
+
+        const categories = await this.categoryRepository.findByIdArray(catIdsArray);
+        const products = await this.productRepository.findByIdArray(prodIdsArray);
+
+        orderLine.categories = categories;
+        orderLine.products = products;
 
         const createdOrderLine = await this.orderLineRepository.create(orderLine);
         return createdOrderLine;
