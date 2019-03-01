@@ -6,15 +6,18 @@ export class CategoriesService {
 
     categoryRepository: CategoryRepository = new CategoryRepository();
 
-    async getProducts(limit: number, offset: number): Promise<object> {
+    async getCategories(): Promise<object> {
         const categories = await this.categoryRepository.find();
         const count = await this.categoryRepository.count();
         return {
             list: categories,
-            offset: offset,
-            limit: limit,
             count
         }
+    }
+
+    async getByUuid(uuid: string): Promise<Category>{
+        const category = this.categoryRepository.findByUuid(uuid);
+        return category;
     }
 
     async create(body): Promise<Category> {
@@ -26,7 +29,7 @@ export class CategoriesService {
         return createdCategory;
     }
     
-    async update(id, body): Promise<Category> {
+    public async update(id, body): Promise<Category> {
         const category = new Category();
 
         category.name = body.name;
@@ -35,7 +38,12 @@ export class CategoriesService {
         return updatedCategory;
     }
 
-    async delete(id): Promise<void> {
+    public async delete(id): Promise<void> {
         await this.categoryRepository.delete(id);
+    }
+
+    public async getByUuidArray(uuids: Array<string>): Promise<Array<Category>>{
+        const categories = await this.categoryRepository.findByUuidArray(uuids);
+        return categories;
     }
 }

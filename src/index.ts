@@ -13,9 +13,11 @@ const appInstallPromise: Promise<void> = connection
   .then(c => {
     appObj.mountRoutes();
     appObj.addErrorHandler();
+
     serverApp.listen(port, (err: Error) => {
+
       if (err) {
-        console.log(err.message || err);
+        console.error(err.message || err);
         process.exit(10);
       }
 
@@ -23,7 +25,7 @@ const appInstallPromise: Promise<void> = connection
     });
   })
   .catch((e: Error) => {
-    console.log(e.stack);
+    console.error(e.stack);
   });
 
 module.exports = {

@@ -18,12 +18,7 @@ export class UserRepository extends BaseRepository<User> {
 
     async update(id: string, user: User): Promise<any> {
         await this.getRepository().update(id, { isBlocked: user.isBlocked, balance: user.balance});
-        const updatedUser = this.findById(id);
+        const updatedUser = this.findByUuid(id);
         return updatedUser;
-    }
-
-    async delete(id: string): Promise<boolean> {
-        await this.getRepository().delete(id);
-        return true;
     }
 }

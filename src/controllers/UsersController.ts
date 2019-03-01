@@ -28,7 +28,7 @@ export class UserController {
   private async getUser(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     try {
-      const user = await this.userRepository.findById(id);
+      const user = await this.userRepository.findByUuid(id);
       return res.status(200).send(user);
     } catch (err) {
       return next(err);

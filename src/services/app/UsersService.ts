@@ -42,8 +42,9 @@ export class UsersService {
     }
 
     async getCurrentUser(id: string) {
-        const user = await this.usersRepository.findById(id);
+        const user = await this.usersRepository.findByUuid(id);
         user.password = undefined;
         return user;
     }
+
 }

@@ -1,11 +1,11 @@
 import { ProductRepository } from '../../repositories/ProductRepository';
 import { Product } from '../../models/Product';
-import { CategoryRepository } from '../../repositories/CategoryRepository';
+import { CategoriesService } from './CategoriesService';
 
 export class ProductsService {
 
     productRepository: ProductRepository = new ProductRepository();
-    categoryRepository: CategoryRepository = new CategoryRepository();
+    categoriesService: CategoriesService = new CategoriesService();
 
     async getProducts(limit: number, offset: number): Promise<object> {
         const products = await this.productRepository.find(limit, offset);
@@ -25,7 +25,7 @@ export class ProductsService {
         product.description = body.description;
 
         if (body.categoryUuid) {
-            const category = await this.categoryRepository.findById(body.categoryUuid);
+            const category = await this.categoriesService.getByUuid(body.categoryUuid);
             product.category = category;
         }
 
@@ -41,12 +41,26 @@ export class ProductsService {
         product.description = body.description;
 
         if (body.categoryUuid) {
-            const category = await this.categoryRepository.findById(body.categoryUuid);
+            const category = await this.categoriesService.getByUuid(body.categoryUuid);
             product.category = category;
         }
 
-
         const updatedProduct = await this.productRepository.update(id, product);
         return updatedProduct;
+    }
+
+    public async findWithoutCategory(): Promise<Array<Product>> {
+        const products = await this.productRepository.findWithoutCategory();
+        return products
+    }
+
+    async deleteByCategoryUuid(uuid: string){
+        const category = await this.categoriesService.getByUuid(uuid);
+        await this.productRepository.deleteByCategory( category );
+    }
+
+    public async getByUuidArray(uuids: Array<string>): Promise<Array<Product>>{
+        const products = await this.productRepository.findByUuidArray(uuids);
+        return products;
     }
 }

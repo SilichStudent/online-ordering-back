@@ -1,22 +1,22 @@
 import { OrderLineRepository } from '../../repositories/OrderLineRepository';
-import { ProductRepository } from '../../repositories/ProductRepository';
-import { CategoryRepository } from '../../repositories/CategoryRepository';
 import { OrderLine } from '../../models/OrderLine';
+import { ProductsService } from './ProductsService';
+import { CategoriesService } from './CategoriesService';
 
 export class OrderLinesService {
 
     orderLineRepository: OrderLineRepository = new OrderLineRepository();
-    productRepository: ProductRepository = new ProductRepository();
-    categoryRepository: CategoryRepository = new CategoryRepository();
+    productsService: ProductsService = new ProductsService();
+    categoriesService: CategoriesService = new CategoriesService();
 
     async getOrderLines(limit: number, offset: number): Promise<object> {
         let orderLines: OrderLine[] = await this.orderLineRepository.find(limit, offset);
 
         for (let i = 0; i < orderLines.length; i++) {
             const orderLine = orderLines[i];
-            const catIds = orderLine.categories.map( cat=> cat.id);
+            const catUuids = orderLine.categories.map( cat=> cat.uuid);
 
-            orderLine.categories = await this.categoryRepository.findByIdArray(catIds);
+            orderLine.categories = await this.categoriesService.getByUuidArray(catUuids);
         }
 
         const count = await this.orderLineRepository.count();
@@ -38,11 +38,11 @@ export class OrderLinesService {
         orderLine.isActive = body.isActive;
         orderLine.published = false;;
 
-        const catIdsArray = body.categories.map( cat => cat.id ); 
-        const prodIdsArray = body.products.map( prod => prod.id );
+        const catUuidsArray = body.categories.map( cat => cat.uuid ); 
+        const prodUuidsArray = body.products.map( prod => prod.uuid );
 
-        const categories = await this.categoryRepository.findByIdArray(catIdsArray);
-        const products = await this.productRepository.findByIdArray(prodIdsArray);
+        const categories = await this.categoriesService.getByUuidArray(catUuidsArray);
+        const products = await this.productsService.getByUuidArray(prodUuidsArray);
 
         orderLine.categories = categories;
         orderLine.products = products;

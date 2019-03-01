@@ -36,7 +36,7 @@ export class ManagerService {
     }
 
     async getCurrentManager(id: string) {
-        const manager = await this.managerRepository.findById(id);
+        const manager = await this.managerRepository.findByUuid(id);
         manager.password = undefined;
         return manager;
     }
@@ -53,7 +53,7 @@ export class ManagerService {
     }
 
     async delete(id) {
-        const manager = await this.managerRepository.findById(id);
+        const manager = await this.managerRepository.findByUuid(id);
 
         if (manager.email === "manager@softarex.com") {
             throw new DefaultManagerDelete();

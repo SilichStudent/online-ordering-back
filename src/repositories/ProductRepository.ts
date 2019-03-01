@@ -1,15 +1,14 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Product } from '../models/Product';
 import { Category } from '../models/Category';
+import { CategoriesService } from '../services/app/CategoriesService';
 
 export class ProductRepository extends BaseRepository<Product> {
+
+    private categoriesService: CategoriesService = new CategoriesService();
+
     constructor() {
         super(Product)
-    }
-
-    public async find(limit: number, offset: number): Promise<Array<Product>> {
-        const products = await this.getRepository().find({ skip: offset, take: limit });
-        return products
     }
 
     public async findWithoutCategory(): Promise<Array<Product>> {
@@ -17,19 +16,20 @@ export class ProductRepository extends BaseRepository<Product> {
         return products
     }
     
-    async findByCategoryId(id: string): Promise<Array<Product>> {
-        const products = await this.getRepository().find();
+    async findByCategoryUuid(uuid: string): Promise<Array<Product>> {
+        const category = await this.categoriesService.getByUuid(uuid);
+        const products = await this.getRepository().find({ category });
         return products;
     }
 
-    async findByIdArray(ids: string[]): Promise<Array<Product>> {
-        const idObjects = ids.map(id => ({ id }));
+    async findByUuidArray(uuids: string[]): Promise<Array<Product>> {
+        const idObjects = uuids.map(id => ({ id }));
 
         const products = await this.getRepository().find({ where: idObjects });
         return products;
     }
 
-    async deleteByCategoryId(category: Category){
+    async deleteByCategory(category: Category){
         await this.getRepository().delete({ category: category});
     }
 
@@ -39,7 +39,7 @@ export class ProductRepository extends BaseRepository<Product> {
 
     async update(id: string, product: Product){
         await this.getRepository().update(id, product);
-        const updatedProduct = this.findById(id);
+        const updatedProduct = this.findByUuid(id);
         return updatedProduct;
     }
 }

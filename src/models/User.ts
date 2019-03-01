@@ -16,6 +16,6 @@ export class User extends BaseModel {
     @Column({ type: "float", default: 0, nullable: false })
     balance: number;
 
-    @Column({ default: false, nullable: false })
+    @Column({ default: false, nullable: false, name: "is_blocked" })
     isBlocked: boolean;
 }

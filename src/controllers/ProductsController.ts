@@ -14,19 +14,19 @@ export class ProductController {
     private authMiddleware: AuthMiddleware = new AuthMiddleware();
 
     constructor() {
-        this.productController.get('/products', this.getProducts.bind(this));
+        this.productController.get('/products', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getProducts.bind(this));
         this.productController.post('/products', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.createProduct.bind(this));
 
-        this.productController.get('/products/:id', this.getProduct.bind(this));
-        this.productController.put('/products/:id', this.update.bind(this));
-        this.productController.delete('/products/:id', this.delete.bind(this));
+        this.productController.get('/products/:id', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getProduct.bind(this));
+        this.productController.put('/products/:id', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.update.bind(this));
+        this.productController.delete('/products/:id', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.delete.bind(this));
     }
 
     private async getProduct(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
 
         try {
-            const product = await this.productRepository.findById(id);
+            const product = await this.productRepository.findByUuid(id);
             return res.status(200).send(product);
         } catch (err) {
             return next(err);

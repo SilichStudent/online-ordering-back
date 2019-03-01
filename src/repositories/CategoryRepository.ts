@@ -1,10 +1,10 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Category } from '../models/Category';
-import { ProductRepository } from './ProductRepository';
+import { ProductsService } from '../services/app/ProductsService';
 
 export class CategoryRepository extends BaseRepository<Category> {
 
-    productRepository: ProductRepository = new ProductRepository();
+    productsService: ProductsService = new ProductsService();
 
     constructor() {
         super(Category)
@@ -25,29 +25,28 @@ export class CategoryRepository extends BaseRepository<Category> {
         const category = new Category();
 
         category.name = 'default';
-        category.id = 'default';
+        category.uuid = 'default';
 
-        category.products = await this.productRepository.findWithoutCategory();
+        category.products = await this.productsService.findWithoutCategory();
 
         return category;
     }
 
-    async findByIdArray(ids: string[]): Promise<Array<Category>> {
-        const idObjects = ids.map(id => ({ id: id }));
+    async findByUuidArray(uuids: string[]): Promise<Array<Category>> {
+        const uuidObjects = uuids.map(uuid => ({ uuid: uuid }));
 
-        const products = await this.getRepository().find({ where: idObjects, relations: ['products'] });
+        const products = await this.getRepository().find({ where: uuidObjects, relations: ['products'] });
         return products;
     }
 
-    async update(id: string, category: Category): Promise<Category> {
-        await this.getRepository().update(id, { name: category.name });
-        const updatedCategory = this.findById(id);
+    async update(uuid: string, category: Category): Promise<Category> {
+        await this.getRepository().update(uuid, { name: category.name });
+        const updatedCategory = this.findByUuid(uuid);
         return updatedCategory;
     }
 
-    async delete(id: string): Promise<void> {
-        const category = await this.findById(id);
-        await this.productRepository.deleteByCategoryId(category);
-        await this.getRepository().delete(id);
+    async delete(uuid: string): Promise<void> {
+        await this.productsService.deleteByCategoryUuid(uuid);
+        await this.getRepository().delete(uuid);
     }
 }
