@@ -1,5 +1,6 @@
 import { Entity, Column } from 'typeorm'
 import { BaseModel } from './base/BaseModel';
+import { Order } from './Order'
 
 @Entity({ name: 'users' })
 export class User extends BaseModel {
@@ -18,4 +19,6 @@ export class User extends BaseModel {
 
     @Column({ default: false, nullable: false, name: "is_blocked" })
     isBlocked: boolean;
+
+    orders: Order[];
 }
