@@ -1,35 +1,20 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Category } from '../models/Category';
-import { ProductsService } from '../services/app/ProductsService';
 
 export class CategoryRepository extends BaseRepository<Category> {
-
-    productsService: ProductsService = new ProductsService();
 
     constructor() {
         super(Category)
     }
 
     public async find(): Promise<Array<Category>> {
-        const categories: Category[] = await this.getRepository().find({ relations: ['products'] });
-
-        const productsWithoutCategory = await this.addProducts();
-
-        categories.push(productsWithoutCategory);
-
-        return categories
+        const categories: Category[] = await this.getRepository().find();
+        return categories;
     }
 
-    private async addProducts(): Promise<Category> {
-
-        const category = new Category();
-
-        category.name = 'default';
-        category.uuid = 'default';
-
-        category.products = await this.productsService.findWithoutCategory();
-
-        return category;
+    public async findTree(): Promise<Array<Category>> {
+        const categories: Category[] = await this.getRepository().find({ relations: ['products'] });
+        return categories
     }
 
     async findByUuidArray(uuids: string[]): Promise<Array<Category>> {
@@ -46,7 +31,6 @@ export class CategoryRepository extends BaseRepository<Category> {
     }
 
     async delete(uuid: string): Promise<void> {
-        await this.productsService.deleteByCategoryUuid(uuid);
         await this.getRepository().delete(uuid);
     }
 }

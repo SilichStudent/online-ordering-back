@@ -31,7 +31,7 @@ export class UsersService {
     }
 
     async getUsers(limit: number, offset: number): Promise<any> {
-        const users = await this.usersRepository.find(limit, offset);
+        const users = await this.usersRepository.findTree(limit, offset);
         const count = await this.usersRepository.count();
         return {
             list: users,
@@ -41,8 +41,8 @@ export class UsersService {
         }
     }
 
-    async getCurrentUser(id: string) {
-        const user = await this.usersRepository.findByUuid(id);
+    async getCurrentUser(uuid: string) {
+        const user = await this.usersRepository.findByUuid(uuid);
         user.password = undefined;
         return user;
     }

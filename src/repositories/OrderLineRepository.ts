@@ -9,7 +9,7 @@ export class OrderLineRepository extends BaseRepository<OrderLine> {
         super(OrderLine)
     }
 
-    public async find(limit: number, offset: number): Promise<Array<OrderLine>> {
+    public async findTree(limit: number, offset: number): Promise<Array<OrderLine>> {
         const orderLines  = await this.getRepository().find({ skip: offset, take: limit, order: { createdDate: "DESC" }, relations:['categories', 'products'] });
         return orderLines;
     }

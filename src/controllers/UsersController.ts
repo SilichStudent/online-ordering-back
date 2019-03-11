@@ -77,7 +77,7 @@ export class UserController {
 
     try {
       await this.userRepository.delete(id);
-      return res.status(200).send({ id });
+      return res.status(200).send({ uuid: id });
     } catch (err) {
       return next(err);
     }
@@ -98,7 +98,7 @@ export class UserController {
     const { currentUser } = req.body;
 
     try {
-      const result = await this.appUsersService.getCurrentUser(currentUser.id);
+      const result = await this.appUsersService.getCurrentUser(currentUser.uuid);
       return res.status(200).send(result);
     } catch (err) {
       return next(err);

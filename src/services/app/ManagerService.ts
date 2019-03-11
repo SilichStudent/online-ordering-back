@@ -35,14 +35,14 @@ export class ManagerService {
         return createdProduct;
     }
 
-    async getCurrentManager(id: string) {
-        const manager = await this.managerRepository.findByUuid(id);
+    async getCurrentManager(uuid: string) {
+        const manager = await this.managerRepository.findByUuid(uuid);
         manager.password = undefined;
         return manager;
     }
 
     async getManagers(limit, offset) {
-        const managers = await this.managerRepository.find(limit, offset);
+        const managers = await this.managerRepository.findTree(limit, offset);
         const count = await this.managerRepository.count();
         return {
             list: managers,
@@ -60,6 +60,6 @@ export class ManagerService {
         }
 
         await this.managerRepository.delete(id);
-        return { id }
+        return { uuid: id }
     }
 }

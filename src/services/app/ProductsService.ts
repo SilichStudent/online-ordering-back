@@ -5,10 +5,9 @@ import { CategoriesService } from './CategoriesService';
 export class ProductsService {
 
     productRepository: ProductRepository = new ProductRepository();
-    categoriesService: CategoriesService = new CategoriesService();
 
     async getProducts(limit: number, offset: number): Promise<object> {
-        const products = await this.productRepository.find(limit, offset);
+        const products = await this.productRepository.findTree(limit, offset);
         const count = await this.productRepository.count();
         return {
             list: products,
@@ -18,34 +17,40 @@ export class ProductsService {
         }
     }
 
+    async getProductsByCategory(uuid: string): Promise<object>{
+        let products: Product[]; 
+
+        if(uuid === 'default'){
+            products = await this.productRepository.findWithoutCategory();   
+        } else {
+            products = await this.productRepository.findByCategory(uuid);     
+        }
+
+        return {
+            list: products,
+            count: products.length
+        }
+    }
+
     async create(body): Promise<Product> {
         const product = new Product();
         product.name = body.name;
         product.image = body.image;
         product.description = body.description;
-
-        if (body.categoryUuid) {
-            const category = await this.categoriesService.getByUuid(body.categoryUuid);
-            product.category = category;
-        }
-
+        product.categoryUuid = body.categoryUuid;
 
         const createdProduct = await this.productRepository.create(product);
         return createdProduct;
     }
 
-    async update(id: string,body): Promise<Product> {
+    async update(uuid: string, body): Promise<Product> {
         const product = new Product();
         product.name = body.name;
         product.image = body.image;
         product.description = body.description;
+        product.categoryUuid = body.categoryUuid;
 
-        if (body.categoryUuid) {
-            const category = await this.categoriesService.getByUuid(body.categoryUuid);
-            product.category = category;
-        }
-
-        const updatedProduct = await this.productRepository.update(id, product);
+        const updatedProduct = await this.productRepository.update(uuid, product);
         return updatedProduct;
     }
 
@@ -54,12 +59,11 @@ export class ProductsService {
         return products
     }
 
-    async deleteByCategoryUuid(uuid: string){
-        const category = await this.categoriesService.getByUuid(uuid);
-        await this.productRepository.deleteByCategory( category );
+    async deleteByCategoryUuid(categoryUuid: string) {
+        await this.productRepository.deleteByCategory(categoryUuid);
     }
 
-    public async getByUuidArray(uuids: Array<string>): Promise<Array<Product>>{
+    public async getByUuidArray(uuids: Array<string>): Promise<Array<Product>> {
         const products = await this.productRepository.findByUuidArray(uuids);
         return products;
     }

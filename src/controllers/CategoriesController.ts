@@ -12,6 +12,7 @@ export class CategoriesController {
 
     constructor() {
         this.categoriesController.get('/categories', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getCategories.bind(this));
+        this.categoriesController.get('/categories/tree', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getCategoriesTree.bind(this));
         this.categoriesController.post('/categories', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.createCategory.bind(this));
 
         this.categoriesController.get('/categories/:id', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getCategory.bind(this));
@@ -32,8 +33,17 @@ export class CategoriesController {
 
     private async getCategories(req: Request, res: Response, next: NextFunction) {
         try {
-            const products = await this.categoriesService.getCategories();
-            return res.status(200).send(products);
+            const categories = await this.categoriesService.getCategories();
+            return res.status(200).send(categories);
+        } catch (err) {
+            return next(err);
+        }
+    }
+
+    private async getCategoriesTree(req: Request, res: Response, next: NextFunction) {
+        try {
+            const categories = await this.categoriesService.getCategoriesTree();
+            return res.status(200).send(categories);
         } catch (err) {
             return next(err);
         }
@@ -67,7 +77,7 @@ export class CategoriesController {
 
         try {
             await this.categoriesService.delete(id);
-            return res.status(200).send({ id });
+            return res.status(200).send({ uuid: id });
         } catch (err) {
             return next(err);
         }

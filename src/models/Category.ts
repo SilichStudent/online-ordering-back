@@ -8,6 +8,6 @@ export class Category extends BaseModel {
     @Column({ nullable: false, unique: true })
     name: string;
 
-    @OneToMany(type => Product, product => product.category, { cascade: true })
+    @OneToMany(type => Product, product => product.category)
     products: Product[];
 }

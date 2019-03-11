@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, ManyToOne } from 'typeorm'
+import { Entity, Column, JoinColumn, ManyToOne } from 'typeorm'
 import { BaseModel } from './base/BaseModel';
 import { Product } from './Product'
 import { Order } from './Order';
@@ -7,9 +7,11 @@ import { Order } from './Order';
 export class OrderProduct extends BaseModel {
 
     @ManyToOne(type => Order, order => order.orderProducts)
+    @JoinColumn({ name: "order_uuid"})
     order: Order;
 
     @ManyToOne(type => Product)
+    @JoinColumn({ name: "product_uuid"})
     product: Product;
 
     @Column({ nullable: false })

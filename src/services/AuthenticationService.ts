@@ -25,7 +25,7 @@ export class AuthenticationService{
             throw new NotFound();
         }
 
-        const token = jwt.sign({ id: user.id, role: Role.USER }, this.jwtSalt, { expiresIn : '2h'});
+        const token = jwt.sign({ uuid: user.uuid, role: Role.USER }, this.jwtSalt, { expiresIn : '2h'});
 
         user.password = undefined;
 
@@ -46,7 +46,7 @@ export class AuthenticationService{
             throw new NotFound();
         }
 
-        const token = jwt.sign({ id: manager.id, role: Role.MANAGER }, this.jwtSalt, { expiresIn : '2h'});
+        const token = jwt.sign({ uuid: manager.uuid, role: Role.MANAGER }, this.jwtSalt, { expiresIn : '2h'});
 
         manager.password = undefined;
 

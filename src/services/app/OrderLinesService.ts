@@ -10,7 +10,7 @@ export class OrderLinesService {
     categoriesService: CategoriesService = new CategoriesService();
 
     async getOrderLines(limit: number, offset: number): Promise<object> {
-        let orderLines: OrderLine[] = await this.orderLineRepository.find(limit, offset);
+        let orderLines: OrderLine[] = await this.orderLineRepository.findTree(limit, offset);
 
         for (let i = 0; i < orderLines.length; i++) {
             const orderLine = orderLines[i];

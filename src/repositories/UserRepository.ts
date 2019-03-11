@@ -6,7 +6,7 @@ export class UserRepository extends BaseRepository<User> {
         super(User)
     }
 
-    async find(limit: number, offset: number): Promise<Array<User>> {
+    async findTree(limit: number, offset: number): Promise<Array<User>> {
         const users = await this.getRepository().find({ skip: offset, take: limit });
         return users;
     }
@@ -16,9 +16,9 @@ export class UserRepository extends BaseRepository<User> {
         return user;
     }
 
-    async update(id: string, user: User): Promise<any> {
-        await this.getRepository().update(id, { isBlocked: user.isBlocked, balance: user.balance});
-        const updatedUser = this.findByUuid(id);
+    async update(uuid: string, user: User): Promise<any> {
+        await this.getRepository().update(uuid, { isBlocked: user.isBlocked, balance: user.balance});
+        const updatedUser = this.findByUuid(uuid);
         return updatedUser;
     }
 }

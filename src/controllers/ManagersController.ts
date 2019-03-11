@@ -37,7 +37,7 @@ export class ManagersController {
         const { currentUser } = req.body;
 
         try {
-            const result = await this.managersService.getCurrentManager(currentUser.id);
+            const result = await this.managersService.getCurrentManager(currentUser.uuid);
             return res.status(200).send(result);
         } catch (err) {
             return next(err);
@@ -74,7 +74,7 @@ export class ManagersController {
     
         try {
           await this.managersService.delete(id);
-          return res.status(200).send({ id });
+          return res.status(200).send({ uuid: id });
         } catch (err) {
           return next(err);
         }

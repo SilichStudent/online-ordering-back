@@ -15,6 +15,7 @@ export class ProductController {
 
     constructor() {
         this.productController.get('/products', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getProducts.bind(this));
+        this.productController.get('/products/category/:id', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.getProductsByCategory.bind(this));
         this.productController.post('/products', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.createProduct.bind(this));
 
         this.productController.get('/products/:id', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getProduct.bind(this));
@@ -28,6 +29,17 @@ export class ProductController {
         try {
             const product = await this.productRepository.findByUuid(id);
             return res.status(200).send(product);
+        } catch (err) {
+            return next(err);
+        }
+    }
+
+    private async getProductsByCategory(req: Request, res: Response, next: NextFunction) {
+        const { id } = req.params;
+
+        try {
+            const products = await this.appProductsService.getProductsByCategory(id);
+            return res.status(200).send(products);
         } catch (err) {
             return next(err);
         }
@@ -60,7 +72,7 @@ export class ProductController {
 
         try {
             await this.productRepository.delete(id);
-            return res.status(200).send({ id });
+            return res.status(200).send({ uuid: id });
         } catch (err) {
             return next(err);
         }

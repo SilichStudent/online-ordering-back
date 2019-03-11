@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, ManyToOne } from "typeorm";
+import { Entity, Column, JoinColumn, ManyToOne } from "typeorm";
 import { BaseModel } from "./base/BaseModel";
 import { User } from "./User";
 
@@ -6,6 +6,7 @@ import { User } from "./User";
 export class Balance extends BaseModel {
     
   @ManyToOne(type => User)
+  @JoinColumn({ name: "user_uuid"})
   user: User;
 
   @Column({ name: "balance_difference", type: "float" })
