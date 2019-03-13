@@ -27,7 +27,7 @@ export class BaseRepository<T>{
         return createdEntity;
     }
 
-    public async findTree(limit: number, offset: number): Promise<Array<T>>{
+    public async find(limit: number, offset: number): Promise<Array<T>>{
         const entities = await this.getRepository().find({ skip: offset, take: limit});
         return entities;
     }

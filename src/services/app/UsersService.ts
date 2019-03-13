@@ -31,7 +31,7 @@ export class UsersService {
     }
 
     async getUsers(limit: number, offset: number): Promise<any> {
-        const users = await this.usersRepository.findTree(limit, offset);
+        const users = await this.usersRepository.find(limit, offset);
         const count = await this.usersRepository.count();
         return {
             list: users,

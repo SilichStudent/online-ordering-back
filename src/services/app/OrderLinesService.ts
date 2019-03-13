@@ -10,7 +10,7 @@ export class OrderLinesService {
     categoriesService: CategoriesService = new CategoriesService();
 
     async getOrderLines(limit: number, offset: number): Promise<object> {
-        let orderLines: OrderLine[] = await this.orderLineRepository.findTree(limit, offset);
+        let orderLines: OrderLine[] = await this.orderLineRepository.find(limit, offset);
 
         for (let i = 0; i < orderLines.length; i++) {
             const orderLine = orderLines[i];
@@ -49,5 +49,10 @@ export class OrderLinesService {
 
         const createdOrderLine = await this.orderLineRepository.create(orderLine);
         return createdOrderLine;
+    }
+
+    public async getPublished(): Promise<OrderLine>{
+        const orderLine = this.orderLineRepository.findPublished();
+        return orderLine;
     }
 }

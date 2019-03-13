@@ -8,6 +8,11 @@ export class ProductRepository extends BaseRepository<Product> {
         super(Product)
     }
 
+    public async findAll(): Promise<Array<Product>>{
+        const products = await this.getRepository().find();
+        return products;
+    }
+
     public async findWithoutCategory(): Promise<Array<Product>> {
         const products = await this.getRepository().find({ categoryUuid: null });
         return products

@@ -42,7 +42,7 @@ export class ManagerService {
     }
 
     async getManagers(limit, offset) {
-        const managers = await this.managerRepository.findTree(limit, offset);
+        const managers = await this.managerRepository.find(limit, offset);
         const count = await this.managerRepository.count();
         return {
             list: managers,

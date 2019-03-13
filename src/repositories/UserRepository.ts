@@ -6,7 +6,7 @@ export class UserRepository extends BaseRepository<User> {
         super(User)
     }
 
-    async findTree(limit: number, offset: number): Promise<Array<User>> {
+    async find(limit: number, offset: number): Promise<Array<User>> {
         const users = await this.getRepository().find({ skip: offset, take: limit });
         return users;
     }

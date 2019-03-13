@@ -46,10 +46,8 @@ export class ProductController {
     }
 
     private async getProducts(req: Request, res: Response, next: NextFunction) {
-        const { limit, offset } = req.query;
-
         try {
-            const products = await this.appProductsService.getProducts(parseInt(limit), parseInt(offset));
+            const products = await this.appProductsService.getProducts();
             return res.status(200).send(products);
         } catch (err) {
             return next(err);

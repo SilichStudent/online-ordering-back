@@ -6,13 +6,11 @@ export class ProductsService {
 
     productRepository: ProductRepository = new ProductRepository();
 
-    async getProducts(limit: number, offset: number): Promise<object> {
-        const products = await this.productRepository.findTree(limit, offset);
+    async getProducts(): Promise<object> {
+        const products = await this.productRepository.findAll();
         const count = await this.productRepository.count();
         return {
             list: products,
-            offset: offset,
-            limit,
             count
         }
     }

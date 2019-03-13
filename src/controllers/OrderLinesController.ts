@@ -13,6 +13,8 @@ export class OrderLinesController {
     constructor() {
         this.orderLinesController.get('/order-lines', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.MANAGER]), this.getOrderLines.bind(this));
         this.orderLinesController.post('/order-lines', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.createOrderLine.bind(this));
+
+        this.orderLinesController.get('/order-lines/published', this.authMiddleware.isHavePermissions([Role.USER, Role.MANAGER]), this.getPublished.bind(this));
     }
 
     private async getOrderLines(req: Request, res: Response, next: NextFunction) {
@@ -32,6 +34,15 @@ export class OrderLinesController {
         try {
             const createdOrderLine = await this.appOrderLinesService.create(product);
             return res.status(200).send(createdOrderLine);
+        } catch (err) {
+            return next(err);
+        }
+    }
+
+    private async getPublished(req: Request, res: Response, next: NextFunction){
+        try {
+            const orderLine = await this.appOrderLinesService.getPublished();
+            return res.status(200).send(orderLine);
         } catch (err) {
             return next(err);
         }
