@@ -10,9 +10,15 @@ export class OrderProduct extends BaseModel {
     @JoinColumn({ name: "order_uuid"})
     order: Order;
 
+    @Column({ name: "order_uuid", type: "uuid", nullable: true })
+    orderUuid: string;
+
     @ManyToOne(type => Product)
     @JoinColumn({ name: "product_uuid"})
     product: Product;
+
+    @Column({ name: "product_uuid", type: "uuid", nullable: true })
+    productUuid: string;
 
     @Column({ nullable: false })
     quantity: number;

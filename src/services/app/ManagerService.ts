@@ -5,10 +5,12 @@ import { ManagerRepository } from '../../repositories/ManagerRepository'
 import { Manager } from '../../models/Manager';
 import { AlreadyExists } from '../../errors/AlreadyExists';
 import { DefaultManagerDelete } from '../../errors/DefaultManagerDelete';
+import { EmailService } from '../EmailService';
 
 export class ManagerService {
 
     managerRepository: ManagerRepository = new ManagerRepository();
+    emailService: EmailService = new EmailService();
 
     private salt: number = parseInt(process.env.BCRYPT_SALT);
 
@@ -31,8 +33,9 @@ export class ManagerService {
 
         manager.password = bcrypt.hashSync(pass, this.salt);
 
-        const createdProduct = await this.managerRepository.create(manager);
-        return createdProduct;
+        const createdManager = await this.managerRepository.create(manager);
+        await this.emailService.sendEmailToUser(createdManager.email, pass);
+        return createdManager;
     }
 
     async getCurrentManager(uuid: string) {

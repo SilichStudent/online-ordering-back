@@ -36,7 +36,7 @@ export class OrderLinesService {
         orderLine.startTime = new Date(body.startTime);
         orderLine.endTime = new Date(body.endTime);
         orderLine.isActive = body.isActive;
-        orderLine.published = false;;
+        orderLine.published = true;
 
         const catUuidsArray = body.categories.map( cat => cat.uuid ); 
         const prodUuidsArray = body.products.map( prod => prod.uuid );
@@ -51,8 +51,22 @@ export class OrderLinesService {
         return createdOrderLine;
     }
 
-    public async getPublished(): Promise<OrderLine>{
-        const orderLine = this.orderLineRepository.findPublished();
+    public async update(uuid, body): Promise<OrderLine>{
+        const orderLine = await this.orderLineRepository.update(uuid, body);
         return orderLine;
+    }
+
+    public async getPublished(): Promise<OrderLine>{
+        const orderLine = await this.orderLineRepository.findPublished();
+        return orderLine;
+    }
+
+    public async getByUuid(uuid: string): Promise<OrderLine>{
+        const orderLine = await this.orderLineRepository.findByUuid(uuid);
+        return orderLine;
+    }
+
+    public async delete(uuid: string): Promise<void>{
+        await this.orderLineRepository.delete(uuid);
     }
 }

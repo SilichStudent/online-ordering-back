@@ -21,4 +21,11 @@ export class UserRepository extends BaseRepository<User> {
         const updatedUser = this.findByUuid(uuid);
         return updatedUser;
     }
+
+    async changePassword(userUuid, password){
+        await this.getRepository().update(userUuid, { password });
+    }
+    async changeName(userUuid, name){
+        await this.getRepository().update(userUuid, { name });
+    }
 }

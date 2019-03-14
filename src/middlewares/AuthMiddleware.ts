@@ -11,7 +11,7 @@ export class AuthMiddleware {
     private jwtSalt: string = process.env.JWT_SALT;
 
     public isHavePermissions(roles: Array<Role>): RequestHandler{
-        return (req: Request, res: Response, next: NextFunction) => {
+        return (req: any, res: Response, next: NextFunction) => {
             const token = req.headers[Constants.AUTH_TOKEN];
     
             if (!token) {
@@ -29,7 +29,7 @@ export class AuthMiddleware {
                 throw new ForbiddenError();
             }
     
-            req.body.currentUser = decoded;
+            req.currentUser = decoded;
             return next();
         }
     }

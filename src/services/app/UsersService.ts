@@ -3,10 +3,13 @@ import * as bcrypt from 'bcrypt'
 
 import { UserRepository } from '../../repositories/UserRepository'
 import { User } from '../../models/User';
+import { EmailService } from '../EmailService';
+import { CustomError } from '../../errors/CustomError';
 
 export class UsersService {
 
     usersRepository: UserRepository = new UserRepository();
+    emailService: EmailService = new EmailService();
 
     private salt: number = parseInt(process.env.BCRYPT_SALT);
 
@@ -26,8 +29,9 @@ export class UsersService {
         user.balance = body.balance || 0;
         user.isBlocked = body.isBlocked || false;
 
-        const createdProduct = await this.usersRepository.create(user);
-        return createdProduct;
+        const createdUser = await this.usersRepository.create(user);
+        await this.emailService.sendEmailToUser(createdUser.email, pass);
+        return createdUser;
     }
 
     async getUsers(limit: number, offset: number): Promise<any> {
@@ -47,4 +51,19 @@ export class UsersService {
         return user;
     }
 
+    public async changePassword(body, userUuid) {
+        const { oldPassword, newPassword } = body;
+
+        const user = await this.usersRepository.findByUuid(userUuid);
+
+        if (bcrypt.compareSync(oldPassword, user.password)) {
+            await this.usersRepository.changePassword(userUuid, newPassword);
+        } else {
+            throw new CustomError(400, "old password don't match");
+        }
+    }
+
+    public async changeName(name, userUuid) {
+        await this.usersRepository.changeName(userUuid, name);
+    }
 }

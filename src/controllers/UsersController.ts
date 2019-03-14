@@ -16,6 +16,8 @@ export class UserController {
   constructor() {
     this.userController.get("/users/current", this.authMiddleware.isHavePermissions([Role.USER]), this.getCurrentUser.bind(this));
     this.userController.post("/users/signIn", this.signIn.bind(this));
+    this.userController.post("/users/change-password", this.authMiddleware.isHavePermissions([Role.USER]), this.changePassword.bind(this));
+    this.userController.post("/users/change-name", this.authMiddleware.isHavePermissions([Role.USER]), this.changeName.bind(this));
 
     this.userController.get("/users/:id", this.authMiddleware.isHavePermissions([Role.MANAGER]), this.getUser.bind(this));
     this.userController.delete("/users/:id", this.authMiddleware.isHavePermissions([Role.MANAGER]), this.deleteUser.bind(this));
@@ -94,12 +96,36 @@ export class UserController {
     }
   }
 
-  private async getCurrentUser(req: Request, res: Response, next: NextFunction) {
-    const { currentUser } = req.body;
+  private async getCurrentUser(req: any, res: Response, next: NextFunction) {
+    const { currentUser } = req;
 
     try {
       const result = await this.appUsersService.getCurrentUser(currentUser.uuid);
       return res.status(200).send(result);
+    } catch (err) {
+      return next(err);
+    }
+  }
+  
+  private async changePassword(req: any, res: Response, next: NextFunction) {
+    const { currentUser } = req;
+    const { body } = req;
+
+    try {
+      await this.appUsersService.changePassword(body, currentUser.uuid);
+      return res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  private async changeName(req: any, res: Response, next: NextFunction) {
+    const { currentUser } = req;
+    const { name } = req.body;
+
+    try {
+      await this.appUsersService.changeName(name, currentUser.uuid);
+      return res.status(200).send();
     } catch (err) {
       return next(err);
     }

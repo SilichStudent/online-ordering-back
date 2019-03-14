@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
+const ms = require('ms')
 
 import { UserRepository } from '../repositories/UserRepository';
 import { Role } from '../enums/Role'
@@ -11,7 +12,6 @@ export class AuthenticationService{
     userRepository: UserRepository = new UserRepository();
     managersRepository: ManagerRepository = new ManagerRepository();
 
-    // private salt: number = parseInt(process.env.BCRYPT_SALT);
     private jwtSalt: string = process.env.JWT_SALT;
 
     public async authUser(email, password){
@@ -25,7 +25,7 @@ export class AuthenticationService{
             throw new NotFound();
         }
 
-        const token = jwt.sign({ uuid: user.uuid, role: Role.USER }, this.jwtSalt, { expiresIn : '2h'});
+        const token = jwt.sign({ uuid: user.uuid, role: Role.USER }, this.jwtSalt, { expiresIn : ms('2h')});
 
         user.password = undefined;
 
@@ -46,7 +46,7 @@ export class AuthenticationService{
             throw new NotFound();
         }
 
-        const token = jwt.sign({ uuid: manager.uuid, role: Role.MANAGER }, this.jwtSalt, { expiresIn : '2h'});
+        const token = jwt.sign({ uuid: manager.uuid, role: Role.MANAGER }, this.jwtSalt, { expiresIn : ms('2h')});
 
         manager.password = undefined;
 

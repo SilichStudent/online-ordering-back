@@ -15,7 +15,7 @@ export class ProductController {
 
     constructor() {
         this.productController.get('/products', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getProducts.bind(this));
-        this.productController.get('/products/category/:id', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.getProductsByCategory.bind(this));
+        this.productController.get('/products/category/:id', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getProductsByCategory.bind(this));
         this.productController.post('/products', this.authMiddleware.isHavePermissions([Role.MANAGER]), this.createProduct.bind(this));
 
         this.productController.get('/products/:id', this.authMiddleware.isHavePermissions([Role.MANAGER, Role.USER]), this.getProduct.bind(this));

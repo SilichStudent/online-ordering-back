@@ -33,8 +33,8 @@ export class ManagersController {
         }
     }
 
-    private async getCurrentUser(req: Request, res: Response, next: NextFunction) {
-        const { currentUser } = req.body;
+    private async getCurrentUser(req: any, res: Response, next: NextFunction) {
+        const { currentUser } = req;
 
         try {
             const result = await this.managersService.getCurrentManager(currentUser.uuid);

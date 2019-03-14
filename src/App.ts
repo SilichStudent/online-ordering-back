@@ -14,7 +14,7 @@ export class App {
   }
 
   public mountRoutes(): void {
-    this.app.use('/api/v1/', new Routes().routes);
+    this.app.use(process.env.PATH_PREFIX, new Routes().routes);
   }
 
   public addErrorHandler(): void {

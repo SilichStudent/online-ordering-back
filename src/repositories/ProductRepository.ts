@@ -1,6 +1,5 @@
 import { BaseRepository } from './base/BaseRepository'
 import { Product } from '../models/Product';
-import { Category } from '../models/Category';
 
 export class ProductRepository extends BaseRepository<Product> {
 
